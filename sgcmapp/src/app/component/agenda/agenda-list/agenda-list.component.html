@@ -1,15 +1,6 @@
-<div id="comandos">
-    <a href="javascript:void(0)"
-       class="botao"
-       id="add">
-        Adicionar
-    </a>
-    <div>
-        <label for="busca">Busca</label>
-        <input type="search" name="busca" id="busca"
-               placeholder="Digite para buscar">
-    </div>
-</div>
+<app-barra-comandos
+    (eventoBusca)="get($event)"
+    linkForm="/agenda-form"></app-barra-comandos>
 <table>
     <thead>
         <tr>
@@ -23,80 +14,34 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td class="fit">{{'2024-10-18' | date: 'dd/MM/yyyy'}}</td>
-            <td class="fit">14:00</td>
-            <td>Paciente A</td>
-            <td>Profissional A</td>
-            <td>Unidade A</td>
-            <td>Unimed</td>
+        <tr *ngFor="let item of registros">
+            <td class="fit">{{ item.data | date: 'dd/MM/yyyy' }}</td>
+            <td class="fit">{{ item.hora | slice:0:5 }}</td>
+            <td>{{ item.paciente.nome }}</td>
+            <td>{{ item.profissional.nome }}</td>
+            <td>{{ item.profissional.unidade.nome }}</td>
+            <td>{{ item.convenio ? item.convenio.nome: 'Sem convênio' }}</td>
             <td>
-                <a href="javascript:void(0)" class="botao chegada inativo">Chegada</a>
-                <a href="javascript:void(0)" class="botao confirmacao">Confirmar</a>
-                <a href="javascript:void(0)" class="botao">Editar</a>
-                <a href="javascript:void(0)" class="botao excluir">Cancelar</a>
-            </td>
-        </tr>
-        <tr>
-            <td class="fit">10/04/2023</td>
-            <td class="fit">14:30</td>
-            <td>Paciente B</td>
-            <td>Profissional B</td>
-            <td>Unidade B</td>
-            <td>Aliança</td>
-            <td>
-                <a href="javascript:void(0)" class="botao chegada inativo">Chegada</a>
-                <a href="javascript:void(0)" class="botao confirmacao">Confirmar</a>
-                <a href="javascript:void(0)" class="botao">Editar</a>
-                <a href="javascript:void(0)" class="botao excluir">Cancelar</a>
-            </td>
-        </tr>
-        <tr>
-            <td class="fit">10/04/2023</td>
-            <td class="fit">15:00</td>
-            <td>Paciente C</td>
-            <td>Profissional C</td>
-            <td>Unidade C</td>
-            <td>Unimed</td>
-            <td>
-                <a href="javascript:void(0)" class="botao chegada inativo">Chegada</a>
-                <a href="javascript:void(0)" class="botao confirmacao">Confirmar</a>
-                <a href="javascript:void(0)" class="botao">Editar</a>
-                <a href="javascript:void(0)" class="botao excluir">Cancelar</a>
-            </td>
-        </tr>
-        <tr>
-            <td class="fit">10/04/2023</td>
-            <td class="fit">15:30</td>
-            <td>Paciente D</td>
-            <td>Profissional D</td>
-            <td>Unidade D</td>
-            <td></td>
-            <td>
-                <a href="javascript:void(0)" class="botao chegada">Chegada</a>
-                <a href="javascript:void(0)" class="botao confirmacao inativo">Confirmar</a>
-                <a href="javascript:void(0)" class="botao">Editar</a>
-                <a href="javascript:void(0)" class="botao excluir">Cancelar</a>
-            </td>
-        </tr>
-        <tr>
-            <td class="fit">10/04/2023</td>
-            <td class="fit">16:00</td>
-            <td>Paciente E</td>
-            <td>Profissional E</td>
-            <td>Unidade E</td>
-            <td></td>
-            <td>
-                <a href="javascript:void(0)" class="botao chegada inativo">Chegada</a>
-                <a href="javascript:void(0)" class="botao confirmacao">Confirmar</a>
-                <a href="javascript:void(0)" class="botao">Editar</a>
-                <a href="javascript:void(0)" class="botao excluir">Cancelar</a>
+                <a (click)="updateStatus(item.id)"
+                   class="botao chegada"
+                   [ngClass]="{ 'inativo': item.status == 'AGENDADO'}">Chegada</a>
+                <a (click)="updateStatus(item.id)"
+                   class="botao confirmacao"
+                   [ngClass]="{ 'inativo': item.status == 'CONFIRMADO'}">Confirmar</a>
+                <a routerLink="/agenda-form"
+                [queryParams]="{id: item.id}" 
+                class="botao">Editar</a>
+                <a (click)="delete(item.id)"
+                   class="botao excluir">Cancelar</a>
             </td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="7">Total de registros: 5</td>
+            <td colspan="7">
+                <span *ngIf="registros.length > 0">Total de registros: {{ registros.length }}</span>
+                <span *ngIf="registros.length == 0">Nenhum registro encontrado</span>
+            </td>
         </tr>
     </tfoot>
 </table>
