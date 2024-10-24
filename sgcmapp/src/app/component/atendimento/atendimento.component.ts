@@ -1,32 +1,46 @@
-import { Component } from '@angular/core';
-import { ICrudList } from '../i-crud-list';
-import { Atendimento } from '../../model/atendimento';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Atendimento } from '../../model/atendimento';
+import { BarraComandosComponent } from '../barra-comandos/barra-comandos.component';
+import { ICrudList } from '../i-crud-list';
+import { AtendimentoService } from '../../service/atendimento.service';
 
 @Component({
   selector: 'app-atendimento',
   standalone: true,
-  imports: [CommonModule],
+  imports: [BarraComandosComponent, CommonModule],
   templateUrl: './atendimento.component.html',
   styles: ``
 })
-
 export class AtendimentoComponent implements ICrudList<Atendimento> {
 
+  constructor(
+    private servico: AtendimentoService
+  ) { }
+
   ngOnInit(): void {
-    fetch("./assets/atendimentos.json")
-    .then(resposta => resposta.json())
-    .then(dados => {this.registros = dados;});
+    this.get();
   }
 
   registros: Atendimento[] = [];
 
-  get(termoBusca?: string): void {
+  delete(id: number): void {
     throw new Error('Method not implemented.');
   }
 
-  delete(id: number): void {
-    throw new Error('Method not implemented.');
+  get(termoBusca?: string | undefined): void {
+    this.servico.get(termoBusca).subscribe({
+      next: (resposta: Atendimento[]) => {
+        this.registros = resposta.filter(item => {
+          return ['CHEGADA', 'ATENDIMENTO'].includes(item.status);
+        })
+        .filter(item => {
+          let data = new Date().setHours(0,0,0,0);
+          let hoje = new Date(data).toISOString().split('T')[0];
+          return item.data == hoje;
+        });
+      }
+    });
   }
 
 }
