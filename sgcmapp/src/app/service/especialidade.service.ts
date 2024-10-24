@@ -13,7 +13,7 @@ export class EspecialidadeService implements ICrudService<Especialidade>{
   constructor(
     private http: HttpClient
   ) { }
-  apiUrl: string = environment.API_URL + '/especialidade';
+  apiUrl: string = environment.API_URL + '/config/especialidade';
   get(termoBusca?: string): Observable<Especialidade[]> {
     let url = this.apiUrl + '/consultar';
     if (termoBusca) {
@@ -28,9 +28,10 @@ export class EspecialidadeService implements ICrudService<Especialidade>{
   save(objeto: Especialidade): Observable<Especialidade> {
     let url = this.apiUrl;
     if (objeto.id) {
-      url += '/atualizar'
-      return this.http.put<Especialidade>(url,objeto);
+      url += '/atualizar';
+      return this.http.put<Especialidade>(url, objeto);
     }
+    url += '/inserir';
     return this.http.post<Especialidade>(url, objeto);
   }
 

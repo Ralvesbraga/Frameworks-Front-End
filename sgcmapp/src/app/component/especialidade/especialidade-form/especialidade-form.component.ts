@@ -27,11 +27,6 @@ export class EspecialidadeFormComponent implements ICrudForm<Especialidade>{
     return a && b && a.id == b.id;
   }
 
-
-  compareById = (a: any, b: any) => {
-    return a && b && a.id == b.id;
-  }
-
   ngOnInit(): void{
     const id = this.rota.snapshot.queryParamMap.get('id');
     if (id) {
@@ -46,7 +41,7 @@ export class EspecialidadeFormComponent implements ICrudForm<Especialidade>{
   save(): void {
     this.servico.save(this.registro).subscribe({
       complete: () => {
-        this.router.navigate(['/especialidade-list']);
+        this.router.navigate(['/config/especialidade-list']);
         alert('Operação realizada com sucesso!');
       }
     })

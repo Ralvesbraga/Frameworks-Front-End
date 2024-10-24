@@ -11,8 +11,8 @@ export const routes: Routes = [
     { path: 'agenda-list', component: AgendaListComponent},
     { path: 'agenda-form', component: AgendaFormComponent},
     { path: 'atendimento', component: AtendimentoComponent},
-    { path: 'especialidade-list', component: EspecialidadeListComponent},
-    { path: 'especialidade-form', component: EspecialidadeFormComponent},
-    { path: 'usuario-list', component: UsuarioListComponent},
-    { path: 'usuario-form', component: UsuarioFormComponent}
+    { path: 'config/especialidade-list', component: EspecialidadeListComponent},
+    { path: 'config/especialidade-form', component: EspecialidadeFormComponent},
+    { path: 'config/usuario-list', component: UsuarioListComponent},
+    { path: 'config/usuario-form', component: UsuarioFormComponent}
 ];
