@@ -1,1 +1,29 @@
-<p>usuario-form works!</p>
+<form (submit)="save()" #form="ngForm">
+
+    <div class="grid">
+
+    <label for="nomeCompleto">Nome</label>
+    <input type="text" name="nomeCompleto" id="nomeCompleto">
+
+    <label for="nomeUsuario">Usuário</label>
+    <input type="text" name="nomeUsuario" id="nomeUsuario" required>
+
+    <label for="senha">Senha</label>
+    <input type="password" name="senha" id="senha" required>
+
+    <label for="ativo">Ativo</label>
+    <input type="checkbox" name="ativo" id="ativo">
+
+    <label for="papel">Papel</label>
+    <select name="papel" id="papel" required>
+        <option value=""></option>
+        <option value="ATENDENTE">ATENDENTE</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
+
+    </div>
+
+    <input type="button" value="Cancelar">
+    <input type="submit" value="Salvar">
+
+</form>
